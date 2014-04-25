@@ -2,7 +2,7 @@
 #
 function quit
 {
-echo "$*" ; exit
+  echo "$*" ; exit
 }
 
 function usage 
@@ -23,10 +23,10 @@ function usage
 
 function removeLv
 {
-echo "remove Snapshot"
-if ! lvremove -f /dev/${nameOfVolumeGroup}/${nameOfSnapshotVolume}; then
- quit "Error: faild to remove the logical volume snapshot \n(a maual correction is necessary !)" 
-fi
+  echo "remove Snapshot"
+  if ! lvremove -f /dev/${nameOfVolumeGroup}/${nameOfSnapshotVolume}; then
+    quit "Error: faild to remove the logical volume snapshot \n(a maual correction is necessary !)" 
+  fi
 }
 
 while getopts "d:c:p:l:g:v:s:x:z:h" Option
@@ -89,12 +89,12 @@ toBackupVmHdds=`echo $toBackupVmHdds | sed "s/${mountPointLogicalVolume}/${pathO
 
 echo "enable kernelmodul dm-snapshot"
 if ! modprobe dm-snapshot; then
- quit "Error: when activating kernel module: dm-snapshot" 
+  quit "Error: when activating kernel module: dm-snapshot" 
 fi
 
 echo "create $nameOfSnapshotVolume Snapshot"
 if ! lvcreate --size ${sizeOfSnapshot} --snapshot --name ${nameOfSnapshotVolume} /dev/${nameOfVolumeGroup}/${nameOfLogicalVolume} ; then
- quit "Error: when creating the logical volume snapshot" 
+  quit "Error: when creating the logical volume snapshot" 
 fi
 
 echo "create directory ${pathOfSnapshotDir}, if it does not exist"
@@ -104,7 +104,7 @@ fi
 
 echo "mount Snapshot (read only)"
 if ! mount --read-only  /dev/${nameOfVolumeGroup}/${nameOfSnapshotVolume} ${pathOfSnapshotDir} ; then
- removeLv ; quit "Error: could not mount the snapshot" 
+  removeLv ; quit "Error: could not mount the snapshot" 
 fi
 
 echo "backup the virtual hard disks"
@@ -119,7 +119,7 @@ fi
 
 echo "umount ${pathOfSnapshotDir}"
 if ! umount ${pathOfSnapshotDir}; then
- removeLv ; quit "Error: when umount the virtual volume \n(a maual correction is necessary !)" 
+  removeLv ; quit "Error: when umount the virtual volume \n(a maual correction is necessary !)" 
 fi
 
 echo "entferne ${pathOfSnapshotDir}"
